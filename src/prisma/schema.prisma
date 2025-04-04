@@ -1,0 +1,53 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Client {
+  id              Int         @id @default(autoincrement())
+  clientNumber    String      @unique
+  installationNumber String   @unique
+  name            String
+  address         String
+  bills           EnergyBill[]
+
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  @@index([clientNumber])
+  @@index([installationNumber])
+}
+
+model EnergyBill {
+  id                  Int      @id @default(autoincrement())
+  clientNumber        String
+  referenceMonth      String
+  dueDate             DateTime
+  consumptionKwh      Float
+  totalAmount         Float
+  originalFilename    String
+  storedFilename      String
+  uploadDate          DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  barcode             String
+ 
+  billNumber          String?
+  previousReading     String?
+  currentReading      String?
+  readingDate         DateTime?
+ 
+  energyTax           Float?
+ 
+  processingStatus    String  @default("PROCESSED")
+  processingErrors    String?
+
+  client              Client   @relation(fields: [clientNumber], references: [clientNumber])
+ 
+  @@index([clientNumber])
+  @@index([referenceMonth])
+  @@index([dueDate])
+}
