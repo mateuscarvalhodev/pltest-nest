@@ -404,7 +404,8 @@ export class EnergyBillService {
           totalAmount: true,
         },
       });
-      const stats: Record<
+
+      const tempStats: Record<
         string,
         {
           consumo: { total: number; compensado: number };
@@ -420,7 +421,7 @@ export class EnergyBillService {
         const compensado = totalConsumption * 0.3;
         const economiaGD = totalValue * 0.5;
 
-        stats[monthYear] = {
+        tempStats[monthYear] = {
           consumo: {
             total: totalConsumption,
             compensado: compensado,
@@ -432,17 +433,24 @@ export class EnergyBillService {
         };
       });
 
+      // Agora forçamos a ordem dos meses
+      const orderedStats: Record<
+        string,
+        {
+          consumo: { total: number; compensado: number };
+          valor: { 'Valor Sem GD': number; 'Economia GD': number };
+        }
+      > = {};
+
       for (let month = 1; month <= 12; month++) {
         const key = `${this.monthToAbbr(month).toLowerCase()}/${String(year)}`;
-        if (!stats[key]) {
-          stats[key] = {
-            consumo: { total: 0, compensado: 0 },
-            valor: { 'Valor Sem GD': 0, 'Economia GD': 0 },
-          };
-        }
+        orderedStats[key] = tempStats[key] ?? {
+          consumo: { total: 0, compensado: 0 },
+          valor: { 'Valor Sem GD': 0, 'Economia GD': 0 },
+        };
       }
 
-      return stats;
+      return orderedStats;
     } catch (error: unknown) {
       throw new DatabaseError(
         'Falha ao buscar estatísticas mensais',
