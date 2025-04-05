@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import * as fs from 'fs/promises';
 import * as pdfParse from 'pdf-parse';
 import { DefaultExtractor } from './strategies/default-extractor';
-import { PdfProcessingError } from '../../../src/common/errors';
+import { PdfProcessingError } from '@/common/errors';
 
 @Injectable()
 export class PdfExtractorService {

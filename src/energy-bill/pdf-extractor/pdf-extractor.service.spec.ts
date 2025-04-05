@@ -4,7 +4,7 @@ import { PdfExtractorService } from './pdf-extractor.service';
 import * as fs from 'fs/promises';
 import * as pdfParse from 'pdf-parse';
 import { DefaultExtractor } from './strategies/default-extractor';
-import { PdfProcessingError } from '../../../src/common/errors';
+import { PdfProcessingError } from '@/common/errors';
 
 jest.mock('fs/promises', () => ({
   readFile: jest.fn(),
