@@ -27,7 +27,10 @@ export class DefaultExtractor implements BaseExtractor {
     const installationNumber = extract(
       /Nº DO CLIENTE\s+Nº DA INSTALAÇÃO\s+\d+\s+(\d+)/,
     );
-    const clientName = extract(/(\d{8}-\d)\s+([\w\s]+)\s+\d{8}/, 2);
+    const clientName = extract(
+      /(\d{8,11}-\d)\s+(?:ATENÇÃO: DÉBITO AUTOMÁTICO\s+)?([\w\sÀ-ÿ]+?)(?=\s+\d|\s+(?:AV|RUA|PRAÇA|TRAVESSA|RODOVIA)|\s*$)/i,
+      2,
+    );
     const address = extract(
       /(RUA|AV|AVENIDA|ALAMEDA|TRAVESSA) [\w\s.]+ \d+[\s\w,-]* [\w\s]+ \d{5}-\d{3} [\w\s]+, [A-Z]{2}/i,
       0,
