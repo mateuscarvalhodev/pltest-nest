@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { Injectable } from '@nestjs/common';
 import * as fs from 'fs/promises';
 import * as pdfParse from 'pdf-parse';
